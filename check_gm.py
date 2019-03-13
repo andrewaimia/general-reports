@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # vi:tabstop=4:expandtab:shiftwidth=4:softtabstop=4:autoindent:smarttab
 
+#NOTE: Script does not cope with sub-directories, it's not recursive
 import os
 import sqlite3
 
