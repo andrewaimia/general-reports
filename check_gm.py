@@ -13,29 +13,23 @@ def check(curs, report):
     print ('done %s' % report)
 
 if __name__ == '__main__':
-    
-    dbfilepath = 'C:\\Users\\andrew.owen\\OneDrive - Aimia Inc\\Documents\\Personal\\MMEX\\Fin'
-    dbfilename = 'Test-rpt.mmb'
-    dbschemafilepath = '.' 
     dbschemafile = 'tables_v1.sql'
     exitcode = 0
 
     try:
-        #print('Connecting database...' % dbfilename)
-        #conn = sqlite3.connect(dbfilepath + '\\' + dbfilename)
         print('Connecting database...')
         conn = sqlite3.connect(':memory:')
-        conn.row_factory = sqlite3.Row
-        curs = conn.cursor()
-        sql = ''
     except:
         print('Error: Cannot connect to DB')
         exit_code = 1
     else:
         try:
+			conn.row_factory = sqlite3.Row
+			curs = conn.cursor()
+			sql = ''
             print('Opening DB schema file %s...' % dbschemafile)
             try:
-                sfile = open(dbschemafilepath + '\\' + dbschemafile, 'r')
+                sfile = open(dbschemafile, 'r')
             except FileNotFoundError as fnf_error:
                 print(fnf_error)
             except:
@@ -64,11 +58,11 @@ if __name__ == '__main__':
             
             if anyNotPassed:
                 exitcode = 1
-            
+        finally:
+		conn.close()
     finally:
-        conn.close()
-        if not sfile.closed:
-            sfile.close()
+        #if not sfile.closed:
+        #    sfile.close()
         print('End')
     
     exit(exitcode)
