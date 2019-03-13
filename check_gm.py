@@ -17,7 +17,7 @@ def check(curs, report):
     except:
         print('Error:Cannot process sql file')
         exit_code = 1
-    else
+    else:
         print ('processed %s' % report)
     finally:
         print ('done %s' % report)
