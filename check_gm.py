@@ -5,6 +5,7 @@ import os
 import sqlite3
 
 def check(curs, report):
+    rcode = 0
     print ('checking %s' % report)
     sql = ''
     try:
@@ -12,16 +13,15 @@ def check(curs, report):
             sql = sql + line
         curs.execute(sql)
     except FileNotFoundError as fnf_error:
-        print(fnf_error)
-        exit_code = 0
+        print('Error:sqlcontent.sql file no found')
     except:
         print('Error:Cannot process sql file')
-        exit_code = 1
+        rcode = 1
     else:
         print ('processed %s' % report)
     finally:
         print ('done %s' % report)
-        return(exit_code)
+        return(rcode)
 
 
 if __name__ == '__main__':
