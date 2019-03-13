@@ -15,12 +15,11 @@ def check(curs, report):
     except FileNotFoundError as fnf_error:
         print('Error:sqlcontent.sql file no found')
     except:
-        print('Error:Cannot process sql file')
+        print('Error:Cannot process sqlcontent.sql file')
         rcode = 1
     else:
-        print ('processed %s' % report)
-    finally:
         print ('done %s' % report)
+    finally:
         return(rcode)
 
 
