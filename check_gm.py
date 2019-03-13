@@ -24,14 +24,15 @@ if __name__ == '__main__':
         exit_code = 1
     else:
         try:
-			conn.row_factory = sqlite3.Row
-			curs = conn.cursor()
-			sql = ''
+            conn.row_factory = sqlite3.Row
+            curs = conn.cursor()
+            sql = ''
             print('Opening DB schema file %s...' % dbschemafile)
             try:
                 sfile = open(dbschemafile, 'r')
             except FileNotFoundError as fnf_error:
                 print(fnf_error)
+                exit_code = 1
             except:
                 print('Error:Cannot open DB schema file')
                 exit_code = 1
@@ -40,7 +41,7 @@ if __name__ == '__main__':
                     sql = sql + ' '+ line
                 curs.executescript(sql)
                 conn.commit()
-                sql = '' #reset for next statement
+                sfile.close()
         except:
             print('Error:Cannot process DB schema file')
             exitcode = 1
@@ -59,10 +60,8 @@ if __name__ == '__main__':
             if anyNotPassed:
                 exitcode = 1
         finally:
-		conn.close()
+            conn.close()
     finally:
-        #if not sfile.closed:
-        #    sfile.close()
         print('End')
     
     exit(exitcode)
