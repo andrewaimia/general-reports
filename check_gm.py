@@ -7,10 +7,22 @@ import sqlite3
 def check(curs, report):
     print ('checking %s' % report)
     sql = ''
-    for line in open(os.path.join(report, 'sqlcontent.sql'), 'r'):
-        sql = sql + line
-    curs.execute(sql)
-    print ('done %s' % report)
+    try:
+        for line in open(os.path.join(report, 'sqlcontent.sql'), 'r'):
+            sql = sql + line
+        curs.execute(sql)
+    except FileNotFoundError as fnf_error:
+        print(fnf_error)
+        exit_code = 0
+    except:
+        print('Error:Cannot process sql file')
+        exit_code = 1
+    else
+        print ('processed %s' % report)
+    finally:
+        print ('done %s' % report)
+        return(exit_code)
+
 
 if __name__ == '__main__':
     dbschemafile = 'tables_v1.sql'
