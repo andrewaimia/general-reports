@@ -16,7 +16,7 @@ if __name__ == '__main__':
     
     dbfilepath = 'C:\\Users\\andrew.owen\\OneDrive - Aimia Inc\\Documents\\Personal\\MMEX\\Fin'
     dbfilename = 'Test-rpt.mmb'
-    dbschemafilepath = 'C:\\Users\\andrew.owen\\Documents\\GitHub\\andrewaimia-general-reports' 
+    dbschemafilepath = '.' 
     dbschemafile = 'tables_v1.sql'
     exitcode = 0
 
