@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8" />
+    <title><TMPL_VAR REPORTNAME></title>
+    <script src = "sorttable.js"></script>
+    <link href="master.css" rel="stylesheet">
+</head>
+<body>
+<div class = "container">
+<h3><TMPL_VAR REPORTNAME></h3>
+<p>Report Date:<TMPL_VAR TODAY><p>
+<hr>
+<div class = "row">
+<div class = "col-xs-2"></div>
+<div class = "col-xs-8">
+<table class="table sortable">
+<thead>
+    <tr>
+        <th>Account Type</th>
+        <th>Account Name</th>
+        <th></th>
+        <th class="text-right">Reconciled</th>
+        <th class="text-right">Balance</th>
+	<th class="text-right">Balance (<TMPL_VAR PFX_SYMBOL><TMPL_VAR SFX_SYMBOL>)</th>
+    </tr>
+</thead>
+<tbody>
+    <TMPL_LOOP NAME=CONTENTS>
+        <tr>
+        <td><TMPL_VAR TYPE></td>
+        <td><TMPL_VAR ACCOUNT></td>
+        <td><TMPL_VAR COMMENT></td>
+        <td class="money text-right" sorttable_customkey="<TMPL_VAR RECONCILED>" data-prefix="<TMPL_VAR PFX_SYMBOL>" data-suffix="<TMPL_VAR SFX_SYMBOL>" data-decpt="<TMPL_VAR DECIMAL_POINT>" data-grpsep="<TMPL_VAR GROUP_SEPARATOR>"><TMPL_VAR RECONCILED></td>
+        <td class="money text-right" sorttable_customkey="<TMPL_VAR BALANCE>" data-prefix="<TMPL_VAR PFX_SYMBOL>" data-suffix="<TMPL_VAR SFX_SYMBOL>" data-decpt="<TMPL_VAR DECIMAL_POINT>" data-grpsep="<TMPL_VAR GROUP_SEPARATOR>"><TMPL_VAR BALANCE></td>
+	<td class="money text-right" sorttable_customkey="<TMPL_VAR BASEBALANCE>"><TMPL_VAR BASEBALANCE></td>
+    </tr>
+    </TMPL_LOOP>
+</tbody>
+<tfoot>
+    <tr class="total">
+        <td colspan=4></td>
+	<td class="text-right"><b>Grand Total:</b></td>
+        <td class="money"><TMPL_VAR TOTAL_BASEBALANCE></td>
+        <td></td>
+    </tr>
+</tfoot>
+</table>
+</div></div></div>
+<TMPL_LOOP ERRORS>
+    <hr><TMPL_VAR ERROR>
+</TMPL_LOOP>
+<script>
+  <!-- Format numbers -->
+	function formatNumberWithSeparators(sn, grpchar) {
+		if (grpchar != "") {
+			return sn.toString().replace(/\B(?=(\d{3})+(?!\d))/g, grpchar);
+		}
+		else {
+			return sn;
+		}
+	}
+
+	function changeDecimalPoint(sn, dpchar) {
+	    var dppos = sn.lastIndexOf(".");
+		if (dpchar != "") {
+			return (dppos > 0 ? sn.slice(0, dppos) + dpchar + sn.substr(dppos + 1) : sn);
+		}
+		else {
+			return sn;
+		}
+	}
+
+	function currency(sn, grpsep, dpt) {
+	    var fn = parseFloat(sn);
+	    return isNaN(fn) ? sn : formatNumberWithSeparators(changeDecimalPoint(fn.toFixed(2), dpt), grpsep);
+	}
+	var NegValue = 0;
+	var elements = document.getElementsByClassName("money");  //Currency format e.g. $1,234.00 and -$1,234.00 [red colour]
+	if (elements) {
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].innerHTML != "") { 
+				NegValue = (elements[i].innerHTML.indexOf("-") > -1) ? 1 : 0;
+				elements[i].innerHTML = ((elements[i].hasAttribute("data-prefix") ? elements[i].getAttribute("data-prefix") : "<TMPL_VAR PFX_SYMBOL>") + " " + currency((elements[i].innerHTML).replace("-",""), (elements[i].hasAttribute("data-grpsep") ? elements[i].getAttribute("data-grpsep") : "<TMPL_VAR GROUP_SEPARATOR>"), (elements[i].hasAttribute("data-decpt") ? elements[i].getAttribute("data-decpt") : "<TMPL_VAR DECIMAL_POINT>")) + " " + (elements[i].hasAttribute("data-suffix") ? elements[i].getAttribute("data-suffix") : "<TMPL_VAR SFX_SYMBOL>")).trim();
+				if (NegValue) {
+					elements[i].style.color = "#ff0000";
+					elements[i].innerHTML = "-" + elements[i].innerHTML
+				}
+				elements[i].style.textAlign = 'right';
+			}
+		}
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<h2>Net Worth</h2>
+This report tries to mimic the account list and balances on the left of the home page.<br />
+Due to the limits of the General Reports in MMEX, the formatting is not the same, but the values are a correct match (except Assets as noted below).<br />
+<i>For:MMEX v1.3.3. DBv7</i>
+<h4>Accounts</h4>
+<p>To include or remove types of accounts, update line 123 in the SQL of the report to include the appropriate account types.</p>
+<h4>Investment</h4>
+<p>These are listed as Shares to keep terminology the same as home page.<br />As per the home page, any value in the associated Share Accounts is not taken into account.</p>
+<h4>Assets</h4>
+<p>The values shown is depreciated/appreciated value based on the rules on the Asset record.<br />As per the home page, any value in the Asset Accounts is not taken into account. To list these accounts, include the account type '' in line 123 of the SQL.</p>
+<p><i><b>NOTE: </b>Asset depreciation is difference to that calculated in MMX.</i></p>
